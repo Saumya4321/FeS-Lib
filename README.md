@@ -1,2 +1,2 @@
-# fen-lib
-Feature engineering/ selection library
+# FeS-Lib
+Feature selection library
