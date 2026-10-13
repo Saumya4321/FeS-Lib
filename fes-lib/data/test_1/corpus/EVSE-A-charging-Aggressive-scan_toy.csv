@@ -1,0 +1,4 @@
+stream_id,src_ip,duration,packets,rtt,wscale,signed_delta,rtt_valid,slope,sni,always_same,never_there
+5,10.0.0.9,0.1,2,-1,-1,-40,0,99.0,N/A,5,
+6,10.0.0.9,0.1,2,-1,-1,-40,0,99.0,N/A,5,
+7,10.0.0.9,0.2,2,-1,-1,-40,0,99.0,N/A,5,

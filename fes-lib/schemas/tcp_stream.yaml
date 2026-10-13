@@ -1,0 +1,170 @@
+name: tcp_stream_primary_feature
+
+# -----------------------------------------------------------------------------
+# roles -- what each column is. Anything not listed here is treated as NUMERIC.
+# -----------------------------------------------------------------------------
+roles:
+
+  identifiers:
+    - tcp_stream
+    - src_ip
+    - dst_ip
+    - src_port
+
+  leakage_suspects:
+    - dst_port
+
+  binary:
+    - handshake_completed
+    - is_half_open
+    - mss_fwd_present
+    - mss_bwd_present
+    - sack_perm_fwd
+    - sack_perm_bwd
+    - tsval_present_fwd
+    - tsval_present_bwd
+    - ack_slope_valid
+    - rst_seq_offset_valid
+    - rst_has_payload
+    - has_tls
+    - tls_client_hello
+    - tls_server_hello
+    - tls_certificate
+    - tls_appdata_present
+    - tls_alert_present
+
+  categorical:
+    - syn_option_kinds
+    - synack_option_kinds
+    - tcp_option_signature
+    - syn_options_hex
+    - rst_payload_ascii
+    - tls_handshake_types
+    - tls_content_types
+    - tls_sni
+
+
+# -----------------------------------------------------------------------------
+# sentinels -- values that mean "not applicable", not a measurement.
+# -----------------------------------------------------------------------------
+sentinels:
+
+  numeric:
+    syn_synack_rtt: [-1.0]             
+    tls_handshake_rtt: [-1.0]
+    certificate_handshake_rtt: [-1.0]
+    wscale_shift_fwd: [-1]             
+    wscale_shift_bwd: [-1]
+    window_size_scalefactor_fwd: [-1, -2]
+    window_size_scalefactor_bwd: [-1, -2]
+    tsval_initial_fwd: [-1]
+    ttl_bwd: [-1]                   
+    rst_ttl: [-1]                     
+    ttl_match: [-1]
+
+  string: ["none", "na", "n/a", ""]
+
+  validity_flags:
+    ack_slope: ack_slope_valid
+    rst_seq_offset: rst_seq_offset_valid
+    mss_fwd: mss_fwd_present
+    mss_bwd: mss_bwd_present
+    rst_payload_printable_ratio: rst_has_payload
+    rst_payload_ascii: rst_has_payload
+
+# -----------------------------------------------------------------------------
+# groups -- ADVISORY ONLY.
+# -----------------------------------------------------------------------------
+groups:
+  volume: [total_tcp_packets, fwd_packets, bwd_packets, fwd_bytes, bwd_bytes,
+           bidir_packet_ratio, bwd_fwd_pkt_ratio]
+  timing: [stream_duration, iat_mean, iat_std, iat_min, iat_max,
+           packets_in_T1_window, packet_rate_pps]
+  handshake: [syn_synack_rtt, syn_synack_rtt_source, syn_count, synack_count,
+              handshake_completed, tcp_completeness, half_open_age, is_half_open]
+  reliability: [retrans_total, retrans_ratio, retrans_in_T2_window,
+                retrans_in_first_N1_packets, ack_rtt_mean, ack_rtt_std,
+                rto_mean, rto_std, retrans_timing_variance,
+                duplicate_ack_count, duplicate_ack_ratio]
+  fingerprint: [mss_fwd, mss_bwd, mss_fwd_present, mss_bwd_present,
+                mss_clamping_delta, wscale_shift_fwd, wscale_shift_bwd,
+                window_size_scalefactor_fwd, window_size_scalefactor_bwd,
+                mean_window_fwd, mean_window_bwd, wsf_in_mss_units_fwd,
+                wsf_in_mss_units_bwd, sack_perm_fwd, sack_perm_bwd,
+                tsval_present_fwd, tsval_present_bwd, tsval_initial_fwd,
+                syn_option_kinds, synack_option_kinds, option_mismatch_ratio,
+                tcp_option_signature, syn_options_hex]
+  flags: [flag_ack_count, flag_fin_count, flag_rst_count, flag_psh_count,
+          flag_urg_count, ack_ratio, rst_ratio, psh_ratio, syn_ratio]
+  sequence: [ack_slope, ack_slope_valid, seq_ack_gap_mean, seq_ack_gap_variance,
+             seq_entropy, seq_entropy_samples, rst_seq_offset,
+             rst_seq_offset_valid, rst_has_payload,
+             rst_payload_printable_ratio, rst_payload_ascii]
+  ttl: [ttl_fwd, ttl_bwd, ttl_fwd_distinct, ttl_bwd_distinct, rst_ttl,
+        ttl_match, ttl_delta, df_ratio]
+  keepalive: [keepalive_count, keepalive_interval_mean, keepalive_jitter]
+  tls: [has_tls, tls_client_hello, tls_server_hello, tls_certificate,
+        tls_handshake_rtt, certificate_handshake_rtt, tls_handshake_types,
+        tls_content_types, tls_record_count, tls_appdata_present,
+        tls_alert_present, tls_sni]
+  endpoint: [tcp_stream, src_ip, dst_ip, src_port, dst_port]
+
+# -----------------------------------------------------------------------------
+# constraints -- what SHOULD be true. A violation means the EXTRACTOR is wrong;
+# -----------------------------------------------------------------------------
+constraints:
+  ranges:
+    - [".*_ratio$", 0.0, 1.0]
+    - ["^stream_duration$", 0.0, .inf]
+    - ["^iat_(mean|std|min|max)$", 0.0, .inf]
+    - ["^packet_rate_pps$", 0.0, .inf]
+    - ["^(fwd|bwd)_(packets|bytes)$", 0.0, .inf]
+    - ["^seq_entropy$", 0.0, 32.0]
+    - ["^ttl_(fwd|bwd)$", -1.0, 255.0]
+
+  exempt:
+    - bwd_fwd_pkt_ratio
+
+# -----------------------------------------------------------------------------
+# missingness -- Tells which NaNs are structural and therefore shouldn't be imputed.
+# -----------------------------------------------------------------------------
+missingness:
+  structural_missing:
+    - syn_synack_rtt
+    - tls_handshake_rtt
+
+# -----------------------------------------------------------------------------
+# labels -- filename to target.
+# -----------------------------------------------------------------------------
+labels:
+
+ # what u want the label variable to be called in the dataframe
+  benign: benign
+  anomalous: anomalous
+
+  patterns:
+    - ["benign", "benign"]
+    - ["aggressive[-_ ]?scan", "aggressive_scan"]
+    - ["stealth[-_ ]?scan", "stealth_scan"]
+    - ["icmp[-_ ]?flood", "icmp_flood"]
+    - ["syn[-_ ]?flood", "syn_flood"]
+    - ["tcp[-_ ]?flood", "tcp_flood"]
+    - ["udp[-_ ]?flood", "udp_flood"]
+    - ["mitm|arp[-_ ]?spoof", "mitm"]
+    - ["fuzz", "fuzzing"]
+
+  facets:
+    device:
+      - ["evse[-_ ]?a", "EVSE-A"]
+      - ["evse[-_ ]?b", "EVSE-B"]
+    state:
+      - ["charging", "charging"]
+      - ["idle", "idle"]
+
+# -----------------------------------------------------------------------------
+# columns -- names for the two columns the loader adds.
+# -----------------------------------------------------------------------------
+columns:
+  label: label
+  source: capture_id
+  binary_state: binary_state
