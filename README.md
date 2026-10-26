@@ -11,6 +11,7 @@ output means writing a new config, not editing code.
 
 ## 1. What problem it solves
 
+### a) Eexploratory Data Analysis (EDA) on input data
 You have a folder of CSVs, one per capture. Each row is a flow; each column is a
 feature. The filename encodes the label (`..._Benign_...`, `..._icmp-flood_...`).
 Before you can analyse any of it you have to answer a set of boring,
@@ -25,13 +26,8 @@ error-prone questions:
 - Which columns are degenerate, and which only look degenerate because one class
   dominates the row count?
 
-Get any of these wrong and everything downstream — correlations, feature
-ranking, models — is confidently wrong. This library is the layer that gets
-them right, once, declaratively.
-
-**It deliberately stops before analysis.** There is no model, no feature
-ranking, no correlation matrix. Its job is to hand you a frame you can trust.
-
+### b) Feature selection and ranking (TODO)
+### c) Correlation analysis of features (TODO)
 ---
 
 ## 2. Layout
