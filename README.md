@@ -4,8 +4,7 @@
 CSVs.
 + It was written for EVSE charging-station
 traffic, but it knows nothing about EVSE, TCP or charging: everything
-format-specific lives in a YAML config, so pointing it at a different extractor's
-output means writing a new config, not editing code.
+format-specific lives in a YAML config, so pointing it at a different config makes it domain-agnostic.
 
 ---
 
