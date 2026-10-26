@@ -1,6 +1,6 @@
 # FeS-Lib
 + Feature selection library
-+ A library for loading, validating and cleaning directories of per-flow feature
++ Can also be used for loading, validating and cleaning directories of per-flow feature
 CSVs extracted from network captures.
 + It was written for EVSE charging-station
 traffic, but it knows nothing about EVSE, TCP or charging: everything
