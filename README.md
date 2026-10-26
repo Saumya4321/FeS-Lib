@@ -1,7 +1,7 @@
 # FeS-Lib
 + Feature selection library
-+ Can also be used for loading, validating and cleaning directories of per-flow feature
-CSVs extracted from network captures.
++ Can also be used for loading, validating and cleaning directories of 
+CSVs.
 + It was written for EVSE charging-station
 traffic, but it knows nothing about EVSE, TCP or charging: everything
 format-specific lives in a YAML config, so pointing it at a different extractor's
