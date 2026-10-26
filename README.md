@@ -10,7 +10,7 @@ format-specific lives in a YAML config, so pointing it at a different config mak
 
 ## 1. What problem it solves
 
-### a) Eexploratory Data Analysis (EDA) on input data
+### a) Exploratory Data Analysis (EDA) on input data
 You have a folder of CSVs, one per capture. Each row is a flow; each column is a
 feature. The filename encodes the label (`..._Benign_...`, `..._icmp-flood_...`).
 Before you can analyse any of it you have to answer a set of boring,
