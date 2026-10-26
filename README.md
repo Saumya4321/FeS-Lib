@@ -7,7 +7,6 @@ CSVs.
 traffic, but it knows nothing about EVSE, TCP or charging: everything
 format-specific lives in a YAML config, so pointing it at a different config makes it domain-agnostic.
 
----
 <img width="982" height="894" alt="image" src="https://github.com/user-attachments/assets/700759a5-9d79-43e3-8c36-9aca99935611" />
 
 ## 1. What problem it solves
