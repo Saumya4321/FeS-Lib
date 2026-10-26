@@ -2,6 +2,7 @@
 + FeS-Lib is a config-driven feature selection library for ML pipelines, currently with only EDA done.
 + Can be used for loading, validating and cleaning directories of 
 CSVs.
++ Works best for Anomaly detection tasks where you have Benign/Anomalous data.
 + It was written for EVSE charging-station
 traffic, but it knows nothing about EVSE, TCP or charging: everything
 format-specific lives in a YAML config, so pointing it at a different config makes it domain-agnostic.
@@ -11,7 +12,7 @@ format-specific lives in a YAML config, so pointing it at a different config mak
 ## 1. What problem it solves
 
 ### a) Exploratory Data Analysis (EDA) on input data
-You have a folder of CSVs, one per capture. Each row is a flow; each column is a
+You have a folder of CSVs, one per capture. Each row is one datapoint; each column is a
 feature. The filename encodes the label (`..._Benign_...`, `..._icmp-flood_...`).
 Before you can analyse any of it you have to answer a set of boring,
 error-prone questions:
