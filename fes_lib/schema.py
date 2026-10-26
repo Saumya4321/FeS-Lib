@@ -106,20 +106,20 @@ class Schema:
  
     # --- parsing --------
     def label_from_filename(self, filename: str) -> str:
-        low = filename.lower()
+        # low = filename.lower()
         for pattern, label in self.label_patterns:
-            if re.search(pattern, low):
+            if re.search(pattern, filename, re.IGNORECASE):
                 return label
         raise SchemaError(
             f"no label pattern matched {filename!r}"
         )
 
     def facets_from_filename(self, filename: str) -> dict[str, str]:
-        low = filename.lower()
+        # low = filename.lower()
         out: dict[str, str] = {}
         for facet, patterns in self.facet_patterns.items():
             for pattern, value in patterns:
-                if re.search(pattern, low):
+                if re.search(pattern, filename, re.IGNORECASE):
                     out[facet] = value
                     break
         return out

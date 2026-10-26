@@ -1,0 +1,58 @@
+name: toy
+
+roles:
+  identifiers:
+    - stream_id
+    - src_ip
+  leakage_suspects: []
+  binary:
+    - handshake_done
+    - rtt_valid
+  categorical:
+    - tls_version
+    - sni
+    - direction
+
+sentinels:
+  numeric:
+    rtt:    [-1]
+    wscale: [-1, -2]
+  string:
+    - "N/A"
+  validity_flags:
+    slope: rtt_valid
+
+groups:
+  timing:  [duration, rtt, slope]
+  size:    [packets]
+  session: [wscale, signed_delta]
+  tls:     [tls_version, sni]
+  flags:   [handshake_done, rtt_valid]
+
+constraints:
+  ranges:
+    - ["^duration$", 0.0, 100.0]
+  exempt: []
+
+missingness:
+  structural:
+    - rtt
+    - wscale
+    - slope
+
+labels:
+  benign: benign
+  anomalous: anomalous
+  patterns:
+    - ["Benign",          "benign"]
+    - ["Aggressive-scan", "aggressive_scan"]
+    - ["icmp-flood",      "icmp_flood"]
+  facets:
+    state:
+      - ["charging", "charging"]
+      - ["idle",     "idle"]
+
+columns:
+  label: label
+  source: capture_id
+  binary_state: binary_state
