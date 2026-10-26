@@ -1,6 +1,6 @@
 # FeS-Lib
-+ Feature selection library
-+ Can also be used for loading, validating and cleaning directories of 
++ FeS-Lib is a config-driven feature selection library for ML pipelines, currently with only EDA done.
++ Can be used for loading, validating and cleaning directories of 
 CSVs.
 + It was written for EVSE charging-station
 traffic, but it knows nothing about EVSE, TCP or charging: everything
