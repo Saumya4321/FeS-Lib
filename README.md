@@ -304,9 +304,9 @@ Steps 1–8 are read-only. You can run them all and still have changed nothing.
 
 ---
 
-## 7. Adapting it to a new extractor
+## 7. Adapting it to a new data (new schema type)
 
-1. Copy `schemas/template.yaml`.
+1. Copy `schemas/template.yaml`. 
 2. `python -m fes_lib.cli read-header <one file>` and `infer-inventory <dir>` to
    see what you are dealing with.
 3. Fill in `roles`, then `labels.patterns` (lowercase).
@@ -317,7 +317,3 @@ Steps 1–8 are read-only. You can run them all and still have changed nothing.
 6. Decide `missingness.structural`: for each sentinel column, ask whether the
    value *could* have existed. If not, it is structural.
 7. `constraints.ranges` last, as a tripwire for future extractor changes.
-
-No Python changes required at any step. If you find yourself wanting to edit
-`schema.py` to support a new format, that is a sign the config is missing a
-section — say so rather than hardcoding it.
